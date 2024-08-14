@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "user",
+    "password": "12345678",
+    "database": "codingon",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
