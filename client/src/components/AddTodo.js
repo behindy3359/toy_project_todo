@@ -1,34 +1,40 @@
-import React ,{useState}from 'react'
+import React ,{useState, useRef}from 'react';
+import '../styles/AddTodo.scss';
 
 export const AddTodo = ({addItem}) => {
+  
+  const refTodo = useRef();
+
   const [todoItem, setTodoItem] = useState({
     title:'',
   })
 
   const onButtonClick = ()=>{
+    if(todoItem.title.length === 0){
+      return refTodo.current.focus();
+    }
     addItem(todoItem);
-    setTodoItem({
-      title:'', //상태 초기화
-    });
+    todoItem.title ='';
   };
+
   const enterkeyAddTodo = (e)=>{
-    console.log('2123');
+    if(e.nativeEvent.isComposing) return;
     
-    if(e.key==='Enter'){
-      console.log('2');
+    if(e.key === 'Enter'){
       onButtonClick();
     }
   }
 
   return (
     <>
-      <div className='add-todo'>
+      <div className='AddTodo'>
         <input 
           type='text' 
           placeholder='Add your own todo'
           value={todoItem.title}
+          ref={refTodo}
           onChange={(e)=>{ setTodoItem({ title : e.target.value })}}
-          onKeyDown={enterkeyAddTodo}
+          onKeyDown={ enterkeyAddTodo }
         ></input>
         <button onClick={ onButtonClick }>ADD</button>
       </div>

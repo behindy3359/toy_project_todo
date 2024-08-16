@@ -31,21 +31,20 @@ exports.postTodo = async (req,res)=>{
 }
 
 exports.updateTodo = async (req,res)=>{
-  console.log('req.body >>>> ',req.body);
+  
   try{
     let [result] = await db.Todo.update({
       title :req.body.title,
       done: req.body.done,
     },{
       where:{
-        id : {[Op.req]: req.params.todoId}
+        id : req.params.todoId//{[Op.req]: req.params.todoId}
       },
     },);
-    if(idUpdated === 0){
+    if(!result){
       return res.send(false);
     }
 
-    console.log( 'new todo >>>> ', result);
     return res.json({ result, msg : '입력 성공' });
   }catch(err){
     return res.status(500).json({ 
@@ -57,14 +56,11 @@ exports.deleteTodo = async (req, res)=>{
   try{
     
     const id = req.params.todoId;
-    console.log('id>>>>',id);
-    
 
     const result = await db.Todo.destroy({
       where: { id },
     });
-
-    console.log('22222');
+    
     if (result) {
       return res.status(200).send({ 
         "message" : "Todo deleted successfully",
